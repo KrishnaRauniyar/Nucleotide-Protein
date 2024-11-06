@@ -54,7 +54,7 @@ You should pass a csv file drug_protein_cross.csv which has the follwoing format
 
 The csv input file includes information for both Nucleotide (drug) and Protein. The first three columns contains the drug name, drug sequence number, and X, Y, Z coordinates and the following three columns contains the protein name, protein sequence number, and X, Y, Z coordinates and the last columns is the distance between these drug and protein.
 
-## Result
+## Results
 CrossKeys will be generated between:
 - One drug and two protein
 - Two drug and one protein
