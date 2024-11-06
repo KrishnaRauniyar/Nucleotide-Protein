@@ -314,12 +314,6 @@ if __name__ == "__main__":
     csv_filename  = args.input_path
     output_path = args.output_path
     cross_keys.getDrugSeqNum(file=csv_filename)
-
-    # cross_keys.drugAminoSeqNum = ['2_2AC0_DG_F', '501_3VD2_DT_F']
-    # for fileSeq in cross_keys.drugAminoSeqNum:
-    #     cross_keys.read_csv_data(csv_filename, fileSeq)
-    #     cross_keys.create_separate_dictionaries()
-    #     cross_keys.calculatetheta(fileSeq, output_path)
-
+    
     Parallel(n_jobs=-1, verbose=5)(delayed(process_file_seq)(cross_keys, fileSeq, csv_filename, output_path) for fileSeq in cross_keys.drugAminoSeqNum)
 
