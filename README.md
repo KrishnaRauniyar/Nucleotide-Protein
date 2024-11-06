@@ -6,7 +6,7 @@
 - [Installation](#installation)
 - [Usage](#usage)
   - [Generate Keys and Triplets](#generate-keys-and-triplets)
-- [Examples](#examples)
+- [Results](#results)
 
 ## Installation
 
@@ -42,7 +42,7 @@ To generate keys or triplet files for the Nucleotide-Protein:
 python cross_key.py -p drug_protein_cross.csv -o output_dir
 ```
 
-### CSV file information as input
+### CSV file information as input (drug_protein_cross.csv)
 You should pass a csv file drug_protein_cross.csv which has the follwoing format.
 
 | drug              | drug_seq | drug_coordinates     | protein         | protein_seq | protein_coordinates   | distance (angstrom) |
@@ -54,35 +54,17 @@ You should pass a csv file drug_protein_cross.csv which has the follwoing format
 
 The csv input file includes information for both Nucleotide (drug) and Protein. The first three columns contains the drug name, drug sequence number, and X, Y, Z coordinates and the following three columns contains the protein name, protein sequence number, and X, Y, Z coordinates and the last columns is the distance between these drug and protein.
 
+## Result
+CrossKeys will be generated between:
+- One drug and two protein
+- Two drug and one protein
 
-## Examples
-### Example 1: Retrieving PDB Files and Generating Keys
+The results will be stored in output_dir as:
+- filename.keys_Freq_theta29_dist18 (1_1TSR_E_DT.keys_Freq_theta29_dist18): It will store the frequency triplets
+- filename.keys_theta29_dist18 (1_1TSR_E_DT.keys_theta29_dist18): It will store the keys information
 
-```python
-from nucleotide_tsr_package.tsr.retrieve_pdb_files import retrieve_pdb_files
-from nucleotide_tsr_package.tsr.generate_keys_and_triplets import NucleotideTSR
+If their are less atoms than 3 then no cross keys will be generated and the terminal will output error message like the example below:
+- Cannot make keys for 46_3TS8_L_DT having only 2 atoms.
+- Cannot make keys for 9_7B4G_B_DC having only 2 atoms.
 
-# Step 1: Retrieve PDB files
-data_dir = "Dataset/" # It is also the default directory if not declared
-pdb_ids = ["1GTA", "1gtb", "1lbe"] # Not case-sensitive
-chain = ["A", "A", "A"] # Case-sensitive
-mirror_image: "True" # Optional argument. Set to True if you want the TSR to address for the mirror image triangles.
-retrieve_pdb_files(pdb_ids, data_dir)
 
-# Step 2: Generate key files for the proteins
-NucleotideTSR(data_dir, pdb_ids, chain=chain, output_option="keys", mirror_image=mirror_image) # Modify the output option as desired
-```
-zxs3e 
-### Example 2: Using CSV File for Input
-
-```python
-from nucleotide_tsr_package.tsr.retrieve_pdb_files import retrieve_pdb_files
-from nucleotide_tsr_package.tsr.generate_keys_and_triplets import NucleotideTSR
-
-# Use CSV input for batch processing
-data_dir = "Dataset/"
-csv_file = "sample_details.csv"
-mirror_image: "True" # Optional argument. Set to True if you want the TSR to address for the mirror image triangles.
-retrieve_pdb_files(csv_file, data_dir)
-NucleotideTSR(data_dir, csv_file, output_option="triplets", mirror_image=mirror_image)
-```
