@@ -36,14 +36,21 @@ pip install -r requirements.txt
 
 ## Usage
 ### Generate Keys and Triplets
-To generate keys or triplet files for the Nucleotide-Protein:
+First, use drug_protein_3A.py to calculate interactions between drugs and proteins within 3 Angstroms. It will generate a csv file which will be the input for the cross key generation.
 
 ```python
-python cross_key.py -p drug_protein_cross.csv -o output_dir
+python drug_protein_3A.py -p pdb_download_path -c input_file.csv -l drug_atom_lexical_txt.csv -o drug_protein_cross.csv
 ```
 
-### CSV file information as input (drug_protein_cross.csv)
-You should pass a csv file drug_protein_cross.csv which has the follwoing format.
+Required input files:
+- input_file.csv: Contains list of protein names (For example - sample_details_p53_dna.csv)
+- drug_atom_lexical_txt.csv: Contains atom sequence numbers
+
+The script will:
+1. Create directory 'pdb_download_path' if it doesn't exist
+2. Download PDB files from RCSB.org
+3. Calculate interactions within 3 Angstroms
+4. Generate drug_protein_cross.csv with the following format:
 
 | drug              | drug_seq | drug_coordinates     | protein         | protein_seq | protein_coordinates   | distance (angstrom) |
 |-------------------|----------|----------------------|-----------------|-------------|-----------------------|----------------------|
@@ -54,7 +61,21 @@ You should pass a csv file drug_protein_cross.csv which has the follwoing format
 
 The csv input file includes information for both Nucleotide (drug) and Protein. The first three columns contains the drug name, drug sequence number, and X, Y, Z coordinates and the following three columns contains the protein name, protein sequence number, and X, Y, Z coordinates and the last columns is the distance between these drug and protein.
 
+### Generate Keys and Triplets
+After generating the drug_protein_cross.csv file, use cross_key.py to generate keys and triplet files:
+
+```python
+python cross_key.py -p drug_protein_cross.csv -o output_dir
+```
+
 ## Results
+The analysis produces two types of results:
+
+### Drug-Protein Interactions (drug_protein_3A.py)
+- Generates drug_protein_cross.csv containing all interactions within 3 Angstroms
+- Includes detailed atomic information and distances for each interaction
+
+### CrossKeys (cross_key.py)
 CrossKeys will be generated between:
 - One drug and two protein
 - Two drug and one protein
@@ -63,7 +84,7 @@ The results will be stored in output_dir as:
 - filename.keys_Freq_theta29_dist18 (1_1TSR_E_DT.keys_Freq_theta29_dist18): It will store the frequency triplets
 - filename.keys_theta29_dist18 (1_1TSR_E_DT.keys_theta29_dist18): It will store the keys information
 
-If their are less atoms than 3 then no cross keys will be generated and the terminal will output error message like the example below:
+If there are less than 3 atoms, no cross keys will be generated and the terminal will output error messages like:
 - Cannot make keys for 46_3TS8_L_DT having only 2 atoms.
 - Cannot make keys for 9_7B4G_B_DC having only 2 atoms.
 
