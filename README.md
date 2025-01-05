@@ -35,7 +35,7 @@ pip install -r requirements.txt
 ```
 
 ## Usage
-### Generate Keys and Triplets
+### Generate Cross Key Input File
 First, use drug_protein_3A.py to calculate interactions between drugs and proteins within 3 Angstroms. It will generate a csv file which will be the input for the cross key generation.
 
 ```python
